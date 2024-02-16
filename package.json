@@ -5,7 +5,8 @@
   "description": "Desafío de programación para resolver un problema de optimización para minimizar el gasto al comprar empanadas. Se incluye una descripción detallada del problema y se proporcionan casos de prueba.",
   "main": "main.js",
   "scripts": {
-    "test": "vitest"
+    "start": "node main.js",
+    "test": "vitest run"
   },
   "keywords": [
     "javascript",
