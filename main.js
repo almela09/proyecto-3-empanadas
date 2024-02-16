@@ -100,6 +100,12 @@ export const fn = (tres, cuatro, cinco) => {
   /*
   
   Añadir cuentas y explicación del código mañana
+
+  -Arreglar código (acortar?)
+  -Mates para llegar al código
+  -Comentarios de código
+
+
   
   
   
