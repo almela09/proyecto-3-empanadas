@@ -102,19 +102,19 @@ export const fn = (tres, cuatro, cinco) => {
   const base = 6; //precio base de empanada
   const ingrediente = 2; //precio por ingrediente
   const empanadas_por_pack = 3; //numero de empanadas que nos llevamos cada vez
-  
+
   //tipos de empanadas, total en venta y numero de ingredientes
-  let tiposempanada = { 
-    "tres" : {"total" : 0, "ingredientes" : 3}, 
-	"cuatro" : {"total" : 0, "ingredientes" : 4}, 
-	"cinco" : {"total" : 0, "ingredientes" : 5} 
+  let tiposempanada = {
+    "tres": { "total": 0, "ingredientes": 3 },
+    "cuatro": { "total": 0, "ingredientes": 4 },
+    "cinco": { "total": 0, "ingredientes": 5 }
   }
-  
+
   //total de empanadas que tenemos
   tiposempanada["tres"]["total"] = tres;
   tiposempanada["cuatro"]["total"] = cuatro;
   tiposempanada["cinco"]["total"] = cinco;
-  
+
   //errores
   if (tiposempanada["cinco"]["total"] + tiposempanada["cuatro"]["total"] + tiposempanada["tres"]["total"] >= 40) {
     throw new Error("son mas de 40 empanadas");
@@ -122,7 +122,7 @@ export const fn = (tres, cuatro, cinco) => {
   else if ((tiposempanada["cinco"]["total"] + tiposempanada["cuatro"]["total"] + tiposempanada["tres"]["total"]) % 3 != 0) {
     throw new Error("no es multiplo de 3");
   }
-  else if (tiposempanada["cinco"]["total"] < 0 ||  tiposempanada["cuatro"]["total"] < 0 || tiposempanada["tres"]["total"] < 0) {
+  else if (tiposempanada["cinco"]["total"] < 0 || tiposempanada["cuatro"]["total"] < 0 || tiposempanada["tres"]["total"] < 0) {
     throw new Error("hay un numero negativo");
   }
 
@@ -139,39 +139,39 @@ export const fn = (tres, cuatro, cinco) => {
     tiposempanada["tres"]["total"] -= empanadas_por_pack;
     total += base + (tiposempanada["tres"]["ingredientes"] * ingrediente)
   }
-  
+
   //si todavía nos han quedado empanadas por llevarnos, hacemos mitad y mitad siempre que podamos, restando 0.5 al total de empanadas
   while (tiposempanada["cinco"]["total"] + tiposempanada["cuatro"]["total"] + tiposempanada["tres"]["total"] > 0) {
     let cuenta = 0; //contador de empanadas. si es > empanadas_por_pack (3 en nuestro caso) volverá a 0 para hacer otro pack de 3
     let cuentaTotal = 0; //precio de la empanada de mayor valor del actual pack de empanadas.
-	// aquí guardaremos el precio de las empanadas mitad y mitad, que varía depende de la combinación
-	// precio = base + ( ( (ingredientes_empanada_1 + ingredientes_empanada_2) / 2 ) * ingrediente)
-	// o de la empanada entera si no queda otra opción
-	let precio = 0;
-	
+    // aquí guardaremos el precio de las empanadas mitad y mitad, que varía depende de la combinación
+    // precio = base + ( ( (ingredientes_empanada_1 + ingredientes_empanada_2) / 2 ) * ingrediente)
+    // o de la empanada entera si no queda otra opción
+    let precio = 0;
+
     while (cuenta < empanadas_por_pack) {
       if (tiposempanada["cinco"]["total"] > 0 && tiposempanada["tres"]["total"] > 0) { //procesamos media de 5 ing. y media de 3 ing. si es posible
-	  
+
         tiposempanada["cinco"]["total"] -= 0.5; //restamos media empanada
         tiposempanada["tres"]["total"] -= 0.5; //restamos media empanada
         cuenta += 1; //sumamos 1 a la cuenta de empanadas de este pack de 3
-		//calculamos el precio de este mix basado en los ingredientes que lleva cada una
-		precio = base + ( ( (tiposempanada["cinco"]["ingredientes"] + tiposempanada["tres"]["ingredientes"]) / 2 ) * ingrediente );
-		
+        //calculamos el precio de este mix basado en los ingredientes que lleva cada una
+        precio = base + (((tiposempanada["cinco"]["ingredientes"] + tiposempanada["tres"]["ingredientes"]) / 2) * ingrediente);
+
       } else if (tiposempanada["cuatro"]["total"] > 0 && tiposempanada["tres"]["total"] > 0) { //procesamos media de 4 ing. y media de 3 ing. si es posible
-	  
+
         tiposempanada["cuatro"]["total"] -= 0.5;
         tiposempanada["tres"]["total"] -= 0.5;
         cuenta += 1
-        precio = base + ( ( (tiposempanada["cuatro"]["ingredientes"] + tiposempanada["tres"]["ingredientes"]) / 2 ) * ingrediente );
-		
+        precio = base + (((tiposempanada["cuatro"]["ingredientes"] + tiposempanada["tres"]["ingredientes"]) / 2) * ingrediente);
+
       } else if (tiposempanada["cinco"]["total"] > 0 && tiposempanada["cuatro"]["total"] > 0) { //procesamos media de 5 ing. y media de 4 ing. si es posible
-	  
+
         tiposempanada["cinco"]["total"] -= 0.5
         tiposempanada["cuatro"]["total"] -= 0.5
         cuenta += 1
-        precio = base + ( ( (tiposempanada["cinco"]["ingredientes"] + tiposempanada["cuatro"]["ingredientes"]) / 2 ) * ingrediente );
-		
+        precio = base + (((tiposempanada["cinco"]["ingredientes"] + tiposempanada["cuatro"]["ingredientes"]) / 2) * ingrediente);
+
       } else if (tiposempanada["cinco"]["total"] > 0) { //y finalmente las empanadas sueltas que no podemos emparejar mitad y mitad
         tiposempanada["cinco"]["total"] -= 1
         cuenta += 1
@@ -181,21 +181,21 @@ export const fn = (tres, cuatro, cinco) => {
         cuenta += 1;
         precio = base + (tiposempanada["cuatro"]["ingredientes"] * ingrediente);
       } else if (tiposempanada["tres"]["total"] > 0) {
-	  
+
         tiposempanada["tres"]["total"] -= 1;
         cuenta += 1;
-		precio = base + (tiposempanada["tres"]["ingredientes"] * ingrediente);
+        precio = base + (tiposempanada["tres"]["ingredientes"] * ingrediente);
       } else {
         throw new Error("si llegamos aquí algo va realmente mal");
       }
-	  
-	  //comprobamos si el precio de la nueva empanada del pack es mayor que el mayor hasta ahora
-	  //si es así, este es el nuevo precio ya que siempre pagamos la más cara
-	  if (cuentaTotal < precio) {
-          cuentaTotal = precio;
-        }
-	  
-	  //si esta es la última empanada del pack, actualizamos el total a pagar sumando el precio de este pack (cuentaTotal)
+
+      //comprobamos si el precio de la nueva empanada del pack es mayor que el mayor hasta ahora
+      //si es así, este es el nuevo precio ya que siempre pagamos la más cara
+      if (cuentaTotal < precio) {
+        cuentaTotal = precio;
+      }
+
+      //si esta es la última empanada del pack, actualizamos el total a pagar sumando el precio de este pack (cuentaTotal)
       if (cuenta == empanadas_por_pack) {
         total += cuentaTotal;
       }
